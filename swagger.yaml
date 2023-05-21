@@ -1,0 +1,24 @@
+components:
+  schemas:
+    securitySchemes:
+      bearerAuth:
+        type: http
+        scheme: bearer
+        bearerFormat: JWT
+    ReportStoreRequest:
+      description: "Report store request"
+      title: "Report store request"
+      required:
+        - worker_id
+        - start_work
+      properties:
+        worker_id:
+          type: integer
+          example: 1
+        start_work:
+          type: string
+          example: "2023-02-05 05:13:16"
+        end_work:
+          type: string
+          nullable: true
+          example: "2023-02-06 05:13:16"

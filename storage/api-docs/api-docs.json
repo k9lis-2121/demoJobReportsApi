@@ -1,0 +1,250 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Blog posts API",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/reports": {
+            "post": {
+                "tags": [
+                    "Reports"
+                ],
+                "summary": "Create a new report",
+                "description": "Store a newly created resource in storage.",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "worker_id": {
+                                        "type": "string"
+                                    },
+                                    "start_work": {
+                                        "type": "string"
+                                    },
+                                    "end_work": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Report successfully updated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ReportResource"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Report not found"
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/reports/{id}": {
+            "put": {
+                "tags": [
+                    "Reports"
+                ],
+                "summary": "Update the specified resource in storage",
+                "description": "Update the specified resource in storage.",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "worker_id": {
+                                        "type": "integer"
+                                    },
+                                    "start_work": {
+                                        "type": "string",
+                                        "example": "'2023-05-22 02:52:57'"
+                                    },
+                                    "end_work": {
+                                        "type": "string",
+                                        "example": "'2023-05-22 03:52:57'"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Report successfully updated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ReportResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/login": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Get a JWT token via given credentials",
+                "operationId": "login",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "johndoe@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "mypassword"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "token": {
+                                            "type": "string",
+                                            "example": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImEwZDE3YjFjN2EwNzg5MjM4MWY3ODczMTA2OTZhYWU0YTBlYThkZmRhMzJkZmJiYTM5M2RlN2VhMDhjNjYxZDcxNTA2YTQxY2MzMGRkODNjIn0."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Unauthorized"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "AuthResource": {
+                "title": "Auth response",
+                "description": "Success Auth response",
+                "properties": {
+                    "email": {
+                        "type": "email",
+                        "example": "example@example.ru"
+                    },
+                    "password": {
+                        "type": "string",
+                        "example": "password"
+                    }
+                },
+                "type": "object"
+            },
+            "ReportResource": {
+                "title": "Report response",
+                "description": "Success Report response",
+                "properties": {
+                    "worker_id": {
+                        "type": "integer",
+                        "example": "5"
+                    },
+                    "start_work": {
+                        "type": "string",
+                        "example": "2023-05-21T20:00:12Z"
+                    },
+                    "end_work": {
+                        "type": "string",
+                        "example": "2023-05-21T20:00:12Z"
+                    }
+                },
+                "type": "object"
+            },
+            "Report": {
+                "required": [
+                    "worker_id",
+                    "start_work",
+                    "end_work"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "The report's ID",
+                        "type": "integer"
+                    },
+                    "worker_id": {
+                        "description": "The worker's ID associated with the report",
+                        "type": "integer"
+                    },
+                    "start_work": {
+                        "description": "The start date and time of the work period",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "end_work": {
+                        "description": "The end date and time of the work period",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    }
+}
